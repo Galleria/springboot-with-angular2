@@ -1,0 +1,166 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.gallerias.ng</groupId>
+	<artifactId>spring-boot-with-angular2-frontend</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>spring-boot-with-angular2</name>
+	<description>spring-boot-with-angular2</description>
+
+	<properties>
+		<npm.executable>npm</npm.executable>
+		<npm.run>run</npm.run>
+		<npm.build>build</npm.build>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>platform-windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<!-- Override the executable names for Windows -->
+				<npm.executable>npm.cmd</npm.executable>
+				<grunt.executable>grunt.cmd</grunt.executable>
+				<bower.executable>bower.cmd</bower.executable>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>local</id>
+			<properties>
+				<npm.build>build:local</npm.build>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+
+		<profile>
+			<id>dev</id>
+			<properties>
+				<npm.build>build:dev</npm.build>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>qa</id>
+			<properties>
+				<npm.build>build:qa</npm.build>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>ua</id>
+			<properties>
+				<npm.build>build:ua</npm.build>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>prod</id>
+			<properties>
+				<npm.build>build:prod</npm.build>
+			</properties>
+		</profile>
+
+	</profiles>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.5.0</version>
+				<executions>
+					<execution>
+						<id>install npm</id>
+						<configuration>
+							<workingDirectory>./src/main/frontend/</workingDirectory>
+							<executable>${npm.executable}</executable>
+							<arguments>
+								<argument>install</argument>
+							</arguments>
+						</configuration>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>build js</id>
+						<configuration>
+							<workingDirectory>./src/main/frontend</workingDirectory>
+							<executable>${npm.executable}</executable>
+							<arguments>
+								<argument>${npm.run}</argument>
+								<argument>${npm.build}</argument>
+							</arguments>
+						</configuration>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>./src/main/frontend/dist</directory>
+							<targetPath>WEB-INF/classes/static</targetPath>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											exec-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.5.0,)
+										</versionRange>
+										<goals>
+											<goal>exec</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

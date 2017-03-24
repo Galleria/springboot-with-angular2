@@ -4,3 +4,6 @@ backend/.settings/
 frontend/src/main/frontend/yarn.lock
 frontend/src/main/frontend/dist/
 .project
+backend/.classpath
+frontend/.classpath
+frontend/src/main/frontend/.vscode/settings.json
