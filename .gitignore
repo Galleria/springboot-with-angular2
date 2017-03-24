@@ -1,0 +1,6 @@
+frontend/src/main/frontend/node_modules/
+backend/.settings/
+.settings/
+frontend/src/main/frontend/yarn.lock
+frontend/src/main/frontend/dist/
+.project

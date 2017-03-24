@@ -1,0 +1,11 @@
+spring:
+# profiles: @env@
+ config:
+  name: Spring Boot with Angular 2
+
+server:
+ context-path: /ng 
+ servlet-path: /*
+
+props:
+ environment: @env@  
